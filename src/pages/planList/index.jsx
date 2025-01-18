@@ -89,7 +89,7 @@ function PlanList() {
             <div
               key={plan.id}
               className={styles.planCard}
-              onClick={() => navigate(`/plan/${plan.id}`)}
+              onClick={() => navigate(`/travelPlanerV2/plan/${plan.id}`)}
             >
               <PlanCard data={plan} onDelete={() => handleDeletePlan(plan)} />
             </div>

@@ -12,8 +12,11 @@ function App() {
       <Routes>
         <Route path="/travelPlanerV2/" element={<Layout />}>
           <Route index element={<PlanList />} />
-          <Route path="plan/:id" element={<PlanDetail />} />
-          <Route path="itineraries" element={<ItineraryList />} />
+          <Route path="/travelPlanerV2/plan/:id" element={<PlanDetail />} />
+          <Route
+            path="/travelPlanerV2/itineraries"
+            element={<ItineraryList />}
+          />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>

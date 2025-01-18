@@ -175,11 +175,7 @@ function ItineraryList() {
       <TripFilter onFilter={setFilters} />
 
       {filteredTrips?.map((trip, index) => (
-        <div
-          key={`${trip.id}-${index}`}
-          className={styles.tripCard}
-          onClick={() => handleEdit(trip)}
-        >
+        <div key={`${trip.id}-${index}`} className={styles.tripCard}>
           <TripCard
             data={trip}
             onEdit={() => handleEdit(trip)}

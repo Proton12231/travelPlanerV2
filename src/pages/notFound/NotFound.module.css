@@ -1,0 +1,113 @@
+.container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.content {
+  text-align: center;
+  z-index: 1;
+}
+
+.errorCode {
+  font-size: 120px;
+  font-weight: bold;
+  background: linear-gradient(45deg, var(--primary-color), #36cfc9);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1;
+  margin-bottom: 24px;
+}
+
+.title {
+  font-size: 32px;
+  color: var(--text-color);
+  margin-bottom: 16px;
+  font-weight: 500;
+}
+
+.description {
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 32px;
+}
+
+.actions {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+}
+
+.decoration {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.cloud1,
+.cloud2 {
+  position: absolute;
+  font-size: 64px;
+  opacity: 0.2;
+  animation: float 20s infinite linear;
+}
+
+.cloud1 {
+  top: 20%;
+  left: -64px;
+}
+
+.cloud2 {
+  bottom: 30%;
+  right: -64px;
+  animation-delay: -10s;
+}
+
+.plane {
+  position: absolute;
+  font-size: 48px;
+  top: 40%;
+  left: -48px;
+  animation: flyAcross 15s infinite linear;
+}
+
+@keyframes float {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(calc(100vw + 64px));
+  }
+}
+
+@keyframes flyAcross {
+  from {
+    transform: translateX(0) rotate(45deg);
+  }
+  to {
+    transform: translateX(calc(100vw + 48px)) rotate(45deg);
+  }
+}
+
+/* 响应式布局 */
+@media (max-width: 768px) {
+  .errorCode {
+    font-size: 80px;
+  }
+
+  .title {
+    font-size: 24px;
+  }
+
+  .description {
+    font-size: 14px;
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+}
