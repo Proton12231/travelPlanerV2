@@ -3,6 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "homepage": "https://proton12231.github.io/travelPlanerV2",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -13,9 +14,12 @@
   },
   "dependencies": {
     "antd": "^5.23.1",
+    "gh-pages": "^6.3.0",
+    "html2canvas": "^1.4.1",
     "react": "^18.3.1",
     "react-beautiful-dnd": "^13.1.1",
     "react-dom": "^18.3.1",
+    "react-hot-toast": "^2.5.1",
     "react-router-dom": "^7.1.2"
   },
   "devDependencies": {

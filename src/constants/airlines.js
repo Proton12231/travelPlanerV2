@@ -33,7 +33,7 @@ export const AIRLINES = [
     value: "3U",
     code: "3U",
     name: "四川航空公司",
-    shortName: "川航",
+    shortName: "四川航空",
   },
   {
     value: "MF",
@@ -57,7 +57,7 @@ export const AIRLINES = [
     value: "KN",
     code: "KN",
     name: "中国联合航空公司",
-    shortName: "联合航空",
+    shortName: "中国联合航空",
   },
   {
     value: "GS",

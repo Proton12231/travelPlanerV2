@@ -11,17 +11,19 @@ function Navbar() {
           <h1 className={styles.title}>春运助手</h1>
           <div className={styles.links}>
             <Link
-              to="/"
+              to="/travelPlanerV2/"
               className={`${styles.link} ${
-                location.pathname === "/" ? styles.active : ""
+                location.pathname === "/travelPlanerV2/" ? styles.active : ""
               }`}
             >
               方案列表
             </Link>
             <Link
-              to="/itineraries"
+              to="/travelPlanerV2/itineraries"
               className={`${styles.link} ${
-                location.pathname === "/itineraries" ? styles.active : ""
+                location.pathname === "/travelPlanerV2/itineraries"
+                  ? styles.active
+                  : ""
               }`}
             >
               行程管理

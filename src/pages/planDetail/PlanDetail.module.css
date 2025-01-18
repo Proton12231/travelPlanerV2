@@ -1,0 +1,281 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-height: 100vh;
+  background: var(--background-color);
+}
+
+.backButton {
+  color: var(--primary-color);
+  padding: 0;
+  margin-bottom: 16px;
+}
+
+.content {
+  flex: 1;
+  overflow-y: auto;
+  margin: 0 auto;
+  max-width: 800px;
+  width: 100%;
+}
+
+.content.exporting {
+  background: linear-gradient(135deg, #f5f5f5 0%, #ffffff 100%);
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+}
+
+.banner {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 48px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  backdrop-filter: blur(10px);
+}
+
+.planName {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--text-color);
+  flex: 1;
+}
+
+.stats {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.statItem {
+  text-align: center;
+}
+
+.statValue {
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--primary-color);
+}
+
+.statLabel {
+  font-size: 12px;
+  color: #666;
+  margin-top: 4px;
+}
+
+.statDivider {
+  width: 1px;
+  height: 30px;
+  background: rgba(0, 0, 0, 0.06);
+}
+
+.trips {
+  padding: 0 24px 24px;
+}
+
+.tripCard {
+  position: relative;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  transition: transform 0.2s ease;
+  padding: 2px;
+}
+
+.tripCard:hover {
+  transform: translateY(-2px);
+}
+
+.perforationLeft,
+.perforationRight {
+  position: absolute;
+  top: 50%;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--background-color);
+  transform: translateY(-50%);
+  z-index: 2;
+}
+
+.perforationLeft {
+  left: -12px;
+}
+
+.perforationRight {
+  right: -12px;
+}
+
+/* 修改 TripCard 组件的样式 */
+.tripCard :global(.tripCard) {
+  position: relative;
+  z-index: 1;
+  background: white;
+  border-radius: 10px;
+}
+
+/* 添加虚线装饰 */
+.tripCard::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 24px;
+  right: 24px;
+  height: 2px;
+  border-top: 2px dashed rgba(0, 0, 0, 0.08);
+  transform: translateY(-50%);
+}
+
+/* 确保内容在虚线上层 */
+.tripCard :global(.tripContent) {
+  position: relative;
+  z-index: 1;
+  background: white;
+  margin: 0 12px;
+  border-radius: 8px;
+}
+
+/* 经停信息样式优化 */
+.tripCard :global(.stopover) {
+  position: relative;
+  z-index: 2;
+  background: white;
+  border-radius: 4px;
+  padding: 2px 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.exportFooter {
+  margin-top: 40px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.brand {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+.slogan {
+  font-size: 14px;
+  color: #666;
+}
+
+.qrCode {
+  text-align: center;
+}
+
+.qrPlaceholder {
+  width: 100px;
+  height: 100px;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+
+.qrText {
+  font-size: 12px;
+  color: #666;
+}
+
+.actions {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 100;
+}
+
+.actionButton {
+  width: 48px;
+  height: 48px;
+  border: none;
+  border-radius: 50%;
+  background: white;
+  color: var(--primary-color);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+}
+
+.actionButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.actionButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.actionButton :global(.icon) {
+  width: 24px;
+  height: 24px;
+}
+
+/* 响应式布局 */
+@media (max-width: 768px) {
+  .banner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 16px;
+  }
+
+  .bannerRight {
+    width: 100%;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .stats {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .trips {
+    padding: 0 16px 16px;
+  }
+
+  button[type="primary"] {
+    width: 100%;
+  }
+
+  .actions {
+    right: 16px;
+    bottom: 16px;
+  }
+
+  .actionButton {
+    width: 40px;
+    height: 40px;
+  }
+
+  .actionButton :global(.icon) {
+    width: 20px;
+    height: 20px;
+  }
+}

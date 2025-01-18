@@ -9,10 +9,10 @@ import Empty from "../../components/Empty";
 import { useToast } from "../../components/Toast";
 import styles from "./PlanCreate.module.css";
 
-function PlanCreate({ onSubmit, onCancel }) {
+function PlanCreate({ onSubmit, onCancel, initialValues }) {
   const toast = useToast();
-  const [planName, setPlanName] = useState("");
-  const [trips, setTrips] = useState([]);
+  const [planName, setPlanName] = useState(initialValues?.planName || "");
+  const [trips, setTrips] = useState(initialValues?.trips || []);
   const [showTripModal, setShowTripModal] = useState(false);
   const [editingTrip, setEditingTrip] = useState(null);
   const [showStats, setShowStats] = useState(false);
@@ -92,6 +92,7 @@ function PlanCreate({ onSubmit, onCancel }) {
       return;
     }
     onSubmit({
+      ...initialValues,
       planName,
       trips,
     });
@@ -214,7 +215,7 @@ function PlanCreate({ onSubmit, onCancel }) {
 
       <div className={styles.footer}>
         <div className={styles.actions}>
-          <Button block onClick={onCancel}>
+          <Button type="secondary" block onClick={onCancel}>
             取消
           </Button>
           <Button
@@ -249,5 +250,9 @@ function PlanCreate({ onSubmit, onCancel }) {
     </div>
   );
 }
+
+PlanCreate.defaultProps = {
+  initialValues: null,
+};
 
 export default PlanCreate;

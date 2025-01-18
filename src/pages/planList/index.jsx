@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "../../components/Button";
+import PlanCard from "../../components/PlanCard";
 import Modal from "../../components/Modal";
 import Confirm from "../../components/Modal/Confirm";
 import toast from "../../components/Toast";
@@ -42,9 +43,7 @@ function PlanList() {
   };
 
   const handleCancelCreate = () => {
-    if (window.confirm("确定要取消创建吗？已编辑的内容将会丢失")) {
-      setShowCreateModal(false);
-    }
+    setShowCreateModal(false);
   };
 
   const handleDeletePlan = (plan) => {
@@ -84,49 +83,12 @@ function PlanList() {
 
       <div className={styles.grid}>
         {plans.map((plan) => (
-          <div key={plan.id} className={styles.card}>
-            <div className={styles.cardHeader}>
-              <h3 className={styles.planName}>{plan.planName}</h3>
-              <div className={styles.actions}>
-                <Button
-                  type="secondary"
-                  size="small"
-                  onClick={() => navigate(`/plan/${plan.id}`)}
-                >
-                  查看
-                </Button>
-                <Button
-                  type="danger"
-                  size="small"
-                  onClick={() => handleDeletePlan(plan)}
-                >
-                  删除
-                </Button>
-              </div>
-            </div>
-            <div className={styles.info}>
-              <div className={styles.infoItem}>
-                <span className={styles.label}>行程数</span>
-                <span className={styles.value}>{plan.trips?.length || 0}</span>
-              </div>
-              <div className={styles.infoItem}>
-                <span className={styles.label}>总时长</span>
-                <span className={styles.value}>
-                  {getTotalDuration(plan.trips)}
-                </span>
-              </div>
-              <div className={styles.infoItem}>
-                <span className={styles.label}>总价格</span>
-                <span className={styles.value}>
-                  ¥{getTotalPrice(plan.trips)}
-                </span>
-              </div>
-            </div>
-            <div className={styles.time}>
-              创建时间：
-              {new Date(plan.createdAt).toLocaleString("zh-CN")}
-            </div>
-          </div>
+          <PlanCard
+            key={plan.id}
+            data={plan}
+            onClick={() => navigate(`/travelPlanerV2/plan/${plan.id}`)}
+            onDelete={() => handleDeletePlan(plan)}
+          />
         ))}
       </div>
 

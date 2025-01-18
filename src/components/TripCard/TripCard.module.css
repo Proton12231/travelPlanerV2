@@ -1,195 +1,208 @@
 .card {
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: var(--border-radius);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  background: white;
+  border-radius: 12px;
   overflow: hidden;
-  transition: all 0.3s ease;
-  border: 1px solid rgba(0, 0, 0, 0.06);
-  backdrop-filter: blur(10px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
-.card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+.mainContent {
+  padding: 20px;
+  background: linear-gradient(to right, #f8f9fa, white, #f8f9fa);
 }
 
-.header {
-  padding: 16px;
-  background: linear-gradient(45deg, var(--primary-color), #36cfc9);
-  color: white;
-  display: flex;
-  justify-content: space-between;
+.cities {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 24px;
   align-items: center;
+}
+
+.cityInfo {
+  text-align: center;
+}
+
+.cityName {
+  font-size: 24px;
+  font-weight: 500;
+  color: var(--text-color);
+  margin-bottom: 8px;
+}
+
+.dateTime {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: center;
+}
+
+.time {
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--text-color);
+}
+
+.date {
+  font-size: 14px;
+  color: #666;
+}
+
+.flightInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
 }
 
 .transport {
   display: flex;
   align-items: center;
   gap: 8px;
+  background: rgba(0, 0, 0, 0.02);
+  padding: 6px 12px;
+  border-radius: 20px;
 }
 
 .icon {
-  font-size: 20px;
+  font-size: 16px;
 }
 
 .flightNo {
-  font-weight: 500;
-}
-
-.actions {
+  font-size: 14px;
+  color: #666;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, monospace;
   display: flex;
-  gap: 8px;
-}
-
-.actionButton {
-  background: rgba(255, 255, 255, 0.2);
-  border: none;
-  padding: 4px 8px;
-  border-radius: 4px;
-  color: white;
-  cursor: pointer;
-  font-size: 12px;
-  transition: all 0.3s ease;
-}
-
-.actionButton:hover {
-  background: rgba(255, 255, 255, 0.3);
-}
-
-.deleteButton:hover {
-  background: var(--error-color);
-}
-
-.content {
-  padding: 16px;
-}
-
-.route {
-  display: flex;
+  gap: 4px;
   align-items: center;
-  justify-content: space-between;
-  margin-bottom: 16px;
 }
 
-.city {
-  flex: 1;
-  text-align: center;
-}
-
-.cityName {
-  font-size: 18px;
+.prefix {
+  color: var(--primary-color);
   font-weight: 500;
-  color: var(--text-color);
-  margin-bottom: 4px;
 }
 
-.time {
+.duration {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
   font-size: 14px;
   color: #666;
 }
 
-.divider {
-  flex: 2;
+.durationLine {
   position: relative;
-  padding: 0 16px;
-}
-
-.line {
+  width: 120px;
   height: 2px;
-  background: linear-gradient(90deg, var(--primary-color), #36cfc9);
-  position: relative;
+  background: var(--primary-color);
+  margin: 0 8px;
 }
 
-.line::before,
-.line::after {
-  content: "";
+.durationDot {
   position: absolute;
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
   background: var(--primary-color);
   top: 50%;
   transform: translateY(-50%);
 }
 
-.line::before {
-  left: -4px;
+.durationDot:first-child {
+  left: 0;
 }
 
-.line::after {
-  right: -4px;
-}
-
-.duration {
-  position: absolute;
-  top: -20px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 12px;
-  color: #666;
-  white-space: nowrap;
+.durationDot:last-child {
+  right: 0;
 }
 
 .stopover {
-  position: absolute;
-  bottom: -30px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 12px;
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   color: #666;
-  white-space: nowrap;
-  text-align: center;
-  background: rgba(0, 0, 0, 0.04);
-  padding: 2px 8px;
-  border-radius: 10px;
+  font-size: 14px;
+  padding: 6px 12px;
+  background: rgba(0, 0, 0, 0.02);
+  border-radius: 20px;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.stopoverIcon {
+  font-size: 14px;
+}
+
+.footer {
+  border-top: 1px dashed rgba(0, 0, 0, 0.1);
+  padding: 16px 20px;
+  background: #fafafa;
 }
 
 .hotel {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 12px;
-  background: rgba(0, 0, 0, 0.02);
-  border-radius: var(--border-radius);
-  margin-bottom: 16px;
-}
-
-.hotelName {
-  flex: 1;
+  padding-bottom: 12px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  color: #666;
   font-size: 14px;
-  color: var(--text-color);
 }
 
-.hotelPrice {
-  color: var(--primary-color);
-  font-weight: 500;
+.hotelIcon {
+  font-size: 16px;
 }
 
-.footer {
+.price {
   display: flex;
-  justify-content: space-between;
-  border-top: 1px solid rgba(0, 0, 0, 0.06);
-  padding-top: 16px;
+  justify-content: flex-end;
+  gap: 24px;
 }
 
-.price,
-.total {
+.priceItem {
   display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.label {
-  font-size: 12px;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
   color: #666;
 }
 
 .amount {
-  font-size: 16px;
   font-weight: 500;
-  color: var(--primary-color);
+  color: var(--text-color);
 }
 
-.total .amount {
-  color: var(--error-color);
+.totalPrice {
+  font-weight: 500;
+  color: var(--text-color);
+}
+
+.totalPrice .amount {
+  color: var(--primary-color);
+  font-size: 16px;
+}
+
+@media (max-width: 768px) {
+  .mainContent {
+    padding: 16px;
+  }
+
+  .cities {
+    gap: 16px;
+  }
+
+  .cityName {
+    font-size: 20px;
+  }
+
+  .time {
+    font-size: 16px;
+  }
+
+  .durationLine {
+    width: 80px;
+  }
 }

@@ -1,4 +1,5 @@
 import { getAirlineByCode } from "../constants/airlines";
+import { getTrainTypeByCode } from "../constants/trains";
 
 /**
  * 格式化航班号
@@ -32,4 +33,29 @@ export const formatFlightNo = (flightNo) => {
   if (!airline) return flightNo;
 
   return `${airline.shortName} ${airlineCode}${flightNumber}`;
+};
+
+export const formatTransportNo = (type, no) => {
+  if (!no) return "";
+
+  switch (type) {
+    case "plane": {
+      const { airlineCode, flightNumber } = parseFlightNo(no);
+      if (!airlineCode) return no;
+      const airline = getAirlineByCode(airlineCode);
+      return airline ? `${airlineCode} ${flightNumber}` : no;
+    }
+    case "train": {
+      // 如果已经包含前缀，提取出来
+      const match = no.match(/^([GDCZKY])?(\d+)$/i);
+      if (!match) return no;
+
+      const [, prefix = "G", number] = match;
+      return `${prefix.toUpperCase()} ${number}`;
+    }
+    case "bus":
+      return `汽${no}`;
+    default:
+      return no;
+  }
 };

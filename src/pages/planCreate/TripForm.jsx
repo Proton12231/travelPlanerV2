@@ -5,6 +5,7 @@ import Select from "../../components/Select";
 import DateTimePicker from "../../components/DateTimePicker";
 import Checkbox from "../../components/Checkbox";
 import { AIRLINES } from "../../constants/airlines";
+import { TRAIN_TYPES } from "../../constants/trains";
 import { useToast } from "../../components/Toast";
 import styles from "./TripForm.module.css";
 
@@ -19,6 +20,7 @@ function TripForm({ initialData, onSubmit, onCancel }) {
   const [formData, setFormData] = useState({
     transportType: "plane",
     airline: "",
+    trainType: "G",
     flightNo: "",
     departureCity: "",
     arrivalCity: "",
@@ -90,8 +92,21 @@ function TripForm({ initialData, onSubmit, onCancel }) {
           label="交通方式"
           options={TRANSPORT_TYPES}
           value={formData.transportType}
-          onChange={(value) => handleChange("transportType", value)}
+          onChange={(value) => {
+            handleChange("transportType", value);
+            // 重置相关字段
+            if (value === "train") {
+              handleChange("trainType", "");
+              handleChange("flightNo", "");
+            } else if (value === "plane") {
+              handleChange("airline", "");
+              handleChange("flightNo", "");
+            } else if (value === "bus") {
+              handleChange("busNo", "");
+            }
+          }}
         />
+
         {formData.transportType === "plane" && (
           <Select
             label="航空公司"
@@ -103,11 +118,41 @@ function TripForm({ initialData, onSubmit, onCancel }) {
             onChange={(value) => handleChange("airline", value)}
           />
         )}
+
+        {formData.transportType === "train" && (
+          <Select
+            label="火车类型"
+            options={TRAIN_TYPES.map((train) => ({
+              value: train.code,
+              label: `${train.shortName} (${train.code})`,
+            }))}
+            value={formData.trainType}
+            onChange={(value) => handleChange("trainType", value)}
+          />
+        )}
+
         <Input
-          label={formData.transportType === "plane" ? "航班号" : "车次号"}
+          label={
+            formData.transportType === "plane"
+              ? "航班号"
+              : formData.transportType === "train"
+              ? "车次号"
+              : "汽车票号"
+          }
           value={formData.flightNo}
           onChange={(e) => handleChange("flightNo", e.target.value)}
-          prefix={formData.airline}
+          prefix={
+            formData.transportType === "plane"
+              ? formData.airline
+              : formData.trainType
+          }
+          placeholder={
+            formData.transportType === "train"
+              ? "请输入车次号"
+              : formData.transportType === "plane"
+              ? "请输入航班号"
+              : "请输入汽车票号"
+          }
         />
       </div>
 

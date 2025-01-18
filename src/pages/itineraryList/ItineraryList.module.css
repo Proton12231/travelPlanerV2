@@ -1,0 +1,79 @@
+.container {
+  padding: 20px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.title {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.title h1 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+  background: linear-gradient(45deg, var(--primary-color), #36cfc9);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.count {
+  color: #999;
+  font-size: 14px;
+}
+
+.tripCard {
+  margin-bottom: 24px;
+  border-radius: 12px;
+}
+
+.tripContent {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.tripActions {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.actionButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: none;
+  color: #999;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+
+.actionButton:hover {
+  background: rgba(0, 0, 0, 0.04);
+  color: var(--primary-color);
+}
+
+.planName {
+  font-size: 14px;
+  color: var(--primary-color);
+  margin-bottom: 8px;
+  padding-left: 4px;
+}
+
+.empty {
+  text-align: center;
+  color: #999;
+  padding: 48px 0;
+}
