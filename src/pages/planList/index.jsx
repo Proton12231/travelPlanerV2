@@ -6,6 +6,8 @@ import Modal from "../../components/Modal";
 import Confirm from "../../components/Modal/Confirm";
 import toast from "../../components/Toast";
 import PlanCreate from "../planCreate";
+import Icon from "../../components/Icon";
+import Empty from "../../components/Empty";
 import styles from "./PlanList.module.css";
 
 function PlanList() {
@@ -81,15 +83,24 @@ function PlanList() {
         <Button onClick={() => setShowCreateModal(true)}>新建方案</Button>
       </div>
 
-      <div className={styles.grid}>
-        {plans.map((plan) => (
-          <PlanCard
-            key={plan.id}
-            data={plan}
-            onClick={() => navigate(`/travelPlanerV2/plan/${plan.id}`)}
-            onDelete={() => handleDeletePlan(plan)}
+      <div className={styles.content}>
+        {plans.length > 0 ? (
+          plans.map((plan) => (
+            <div
+              key={plan.id}
+              className={styles.planCard}
+              onClick={() => navigate(`/plan/${plan.id}`)}
+            >
+              <PlanCard data={plan} onDelete={() => handleDeletePlan(plan)} />
+            </div>
+          ))
+        ) : (
+          <Empty
+            icon="plan"
+            title="暂无方案"
+            description="点击右上角按钮创建第一个方案"
           />
-        ))}
+        )}
       </div>
 
       <Modal

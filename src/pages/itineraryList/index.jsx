@@ -6,6 +6,8 @@ import TripForm from "../planCreate/TripForm";
 import Modal from "../../components/Modal";
 import Icon from "../../components/Icon";
 import styles from "./ItineraryList.module.css";
+import Confirm from "../../components/Modal/Confirm";
+import Empty from "../../components/Empty";
 
 function ItineraryList() {
   const [filters, setFilters] = useState({
@@ -17,6 +19,8 @@ function ItineraryList() {
   const [editingTrip, setEditingTrip] = useState(null);
   const [showPlanForm, setShowPlanForm] = useState(false);
   const [editingPlan, setEditingPlan] = useState(null);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [deletingTrip, setDeletingTrip] = useState(null);
   const [allTrips, setAllTrips] = useState(() => {
     try {
       return JSON.parse(localStorage.getItem("trips") || "[]");
@@ -90,21 +94,26 @@ function ItineraryList() {
     setShowForm(true);
   };
 
-  const handleDelete = (trip) => {
-    if (!window.confirm("确定要删除这个行程吗？")) return;
+  const handleDeleteClick = (trip) => {
+    setShowDeleteConfirm(true);
+    setDeletingTrip(trip);
+  };
 
+  const handleDelete = () => {
     try {
       const trips = JSON.parse(localStorage.getItem("trips") || "[]");
-      const updatedTrips = trips.filter((t) => t.id !== trip.id);
+      const updatedTrips = trips.filter((t) => t.id !== deletingTrip.id);
       localStorage.setItem("trips", JSON.stringify(updatedTrips));
       // 同时从所有方案中移除该行程
       try {
         const plans = JSON.parse(localStorage.getItem("travelPlans") || "[]");
         const updatedPlans = plans.map((plan) => ({
           ...plan,
-          trips: plan.trips?.filter((t) => t.id !== trip.id) || [],
+          trips: plan.trips?.filter((t) => t.id !== deletingTrip.id) || [],
         }));
         localStorage.setItem("travelPlans", JSON.stringify(updatedPlans));
+        setShowDeleteConfirm(false);
+        setDeletingTrip(null);
       } catch (error) {
         console.error("Error updating plans:", error);
       }
@@ -174,12 +183,27 @@ function ItineraryList() {
           <TripCard
             data={trip}
             onEdit={() => handleEdit(trip)}
-            onDelete={() => handleDelete(trip)}
+            onDelete={() => handleDeleteClick(trip)}
           />
         </div>
       ))}
-      {filteredTrips.length === 0 && (
-        <div className={styles.empty}>暂无符合条件的行程</div>
+      {filteredTrips.length === 0 &&
+      filters.city === "" &&
+      !filters.startTime &&
+      !filters.endTime ? (
+        <Empty
+          icon="trip"
+          title="暂无行程"
+          description="点击右上角按钮添加第一个行程"
+        />
+      ) : (
+        filteredTrips.length === 0 && (
+          <Empty
+            icon="search"
+            title="未找到符合条件的行程"
+            description="请尝试调整筛选条件"
+          />
+        )
       )}
 
       <Modal
@@ -218,6 +242,18 @@ function ItineraryList() {
           }}
         />
       </Modal>
+
+      <Confirm
+        visible={showDeleteConfirm}
+        title="删除确认"
+        content={`确定要删除行程吗？此操作不可恢复。`}
+        onConfirm={handleDelete}
+        onCancel={() => {
+          setShowDeleteConfirm(false);
+          setDeletingTrip(null);
+        }}
+        confirmType="danger"
+      />
     </div>
   );
 }
