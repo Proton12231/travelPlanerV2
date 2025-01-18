@@ -1,0 +1,52 @@
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  padding: 8px 16px;
+}
+
+.glass {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.content {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.title {
+  font-size: 20px;
+  font-weight: bold;
+  background: linear-gradient(45deg, var(--primary-color), #36cfc9);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.links {
+  display: flex;
+  gap: 16px;
+}
+
+.link {
+  text-decoration: none;
+  color: var(--text-color);
+  padding: 6px 12px;
+  border-radius: 20px;
+  transition: all 0.3s ease;
+}
+
+.link:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.active {
+  background: rgba(24, 144, 255, 0.1);
+  color: var(--primary-color);
+}

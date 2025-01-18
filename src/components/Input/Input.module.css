@@ -1,0 +1,52 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.label {
+  font-size: 14px;
+  color: var(--text-color);
+  margin-bottom: 4px;
+}
+
+.inputWrapper {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: var(--border-radius);
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.inputWrapper:focus-within {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.1);
+}
+
+.input {
+  flex: 1;
+  border: none;
+  outline: none;
+  padding: 8px 12px;
+  font-size: 14px;
+  background: transparent;
+  color: var(--text-color);
+}
+
+.prefix,
+.suffix {
+  padding: 0 12px;
+  color: #999;
+  background: rgba(0, 0, 0, 0.02);
+}
+
+.error {
+  border-color: var(--error-color);
+}
+
+.errorText {
+  font-size: 12px;
+  color: var(--error-color);
+}

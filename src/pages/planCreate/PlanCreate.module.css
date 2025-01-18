@@ -1,0 +1,194 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-height: 100vh;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+}
+
+.header {
+  flex-shrink: 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.titleBar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+}
+
+.nameInput {
+  flex: 1;
+}
+
+.statsToggle {
+  padding: 0;
+  color: var(--primary-color);
+}
+
+.statsPanel {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+  background: rgba(0, 0, 0, 0.02);
+}
+
+.statsPanel.show {
+  max-height: 300px;
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  padding: 16px;
+}
+
+.statItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: var(--border-radius);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.statIcon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: rgba(24, 144, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
+
+.statContent {
+  flex: 1;
+}
+
+.statLabel {
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 4px;
+}
+
+.statValue {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text-color);
+}
+
+.cities {
+  padding: 0 16px 16px;
+}
+
+.citiesLabel {
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 8px;
+}
+
+.citiesList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: var(--border-radius);
+  padding: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.city {
+  font-size: 14px;
+  color: var(--text-color);
+}
+
+.arrow {
+  margin: 0 4px;
+  color: #999;
+}
+
+.content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+}
+
+.tripList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-height: 200px;
+}
+
+.tripItem {
+  transition: transform 0.2s ease;
+}
+
+.tripItem:hover {
+  transform: translateX(4px);
+}
+
+.footer {
+  flex-shrink: 0;
+  padding: 16px;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+}
+
+.addButton {
+  margin-bottom: 12px;
+}
+
+.actions {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+/* 响应式布局 */
+@media (max-width: 768px) {
+  .statsGrid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .citiesList {
+    padding: 8px;
+  }
+
+  .city {
+    font-size: 12px;
+  }
+
+  .footer {
+    padding: 12px;
+  }
+
+  .actions {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* 适配不同高度 */
+@media (max-height: 600px) {
+  .statsPanel.show {
+    max-height: 200px;
+  }
+
+  .content {
+    padding: 12px;
+  }
+
+  .tripList {
+    gap: 12px;
+    min-height: 150px;
+  }
+}

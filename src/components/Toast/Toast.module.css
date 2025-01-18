@@ -1,0 +1,83 @@
+.container {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  pointer-events: none;
+}
+
+.toast {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 40px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+  max-width: 90vw;
+}
+
+.visible {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.hidden {
+  transform: translateY(-20px);
+  opacity: 0;
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.message {
+  font-size: 14px;
+  color: var(--text-color);
+}
+
+/* Toast types */
+.success {
+  border-left: 4px solid var(--success-color);
+}
+
+.success .icon {
+  color: var(--success-color);
+}
+
+.error {
+  border-left: 4px solid var(--error-color);
+}
+
+.error .icon {
+  color: var(--error-color);
+}
+
+.warning {
+  border-left: 4px solid var(--warning-color);
+}
+
+.warning .icon {
+  color: var(--warning-color);
+}
+
+.info {
+  border-left: 4px solid var(--primary-color);
+}
+
+.info .icon {
+  color: var(--primary-color);
+}

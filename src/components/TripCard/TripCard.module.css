@@ -1,0 +1,195 @@
+.card {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: var(--border-radius);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  backdrop-filter: blur(10px);
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.header {
+  padding: 16px;
+  background: linear-gradient(45deg, var(--primary-color), #36cfc9);
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.transport {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.icon {
+  font-size: 20px;
+}
+
+.flightNo {
+  font-weight: 500;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+}
+
+.actionButton {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  padding: 4px 8px;
+  border-radius: 4px;
+  color: white;
+  cursor: pointer;
+  font-size: 12px;
+  transition: all 0.3s ease;
+}
+
+.actionButton:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.deleteButton:hover {
+  background: var(--error-color);
+}
+
+.content {
+  padding: 16px;
+}
+
+.route {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.city {
+  flex: 1;
+  text-align: center;
+}
+
+.cityName {
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--text-color);
+  margin-bottom: 4px;
+}
+
+.time {
+  font-size: 14px;
+  color: #666;
+}
+
+.divider {
+  flex: 2;
+  position: relative;
+  padding: 0 16px;
+}
+
+.line {
+  height: 2px;
+  background: linear-gradient(90deg, var(--primary-color), #36cfc9);
+  position: relative;
+}
+
+.line::before,
+.line::after {
+  content: "";
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--primary-color);
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.line::before {
+  left: -4px;
+}
+
+.line::after {
+  right: -4px;
+}
+
+.duration {
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 12px;
+  color: #666;
+  white-space: nowrap;
+}
+
+.stopover {
+  position: absolute;
+  bottom: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 12px;
+  color: #666;
+  white-space: nowrap;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.04);
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+
+.hotel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.02);
+  border-radius: var(--border-radius);
+  margin-bottom: 16px;
+}
+
+.hotelName {
+  flex: 1;
+  font-size: 14px;
+  color: var(--text-color);
+}
+
+.hotelPrice {
+  color: var(--primary-color);
+  font-weight: 500;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  padding-top: 16px;
+}
+
+.price,
+.total {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.label {
+  font-size: 12px;
+  color: #666;
+}
+
+.amount {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--primary-color);
+}
+
+.total .amount {
+  color: var(--error-color);
+}
