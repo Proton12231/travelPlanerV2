@@ -144,7 +144,9 @@ function TripForm({ initialData, onSubmit, onCancel }) {
           prefix={
             formData.transportType === "plane"
               ? formData.airline
-              : formData.trainType
+              : formData.transportType === "train"
+              ? formData.trainType
+              : ""
           }
           placeholder={
             formData.transportType === "train"
@@ -161,11 +163,13 @@ function TripForm({ initialData, onSubmit, onCancel }) {
           label="出发城市"
           value={formData.departureCity}
           onChange={(e) => handleChange("departureCity", e.target.value)}
+          placeholder="请输入出发城市"
         />
         <Input
           label="到达城市"
           value={formData.arrivalCity}
           onChange={(e) => handleChange("arrivalCity", e.target.value)}
+          placeholder="请输入到达城市"
         />
       </div>
 
@@ -187,6 +191,7 @@ function TripForm({ initialData, onSubmit, onCancel }) {
           label="是否经停"
           checked={formData.hasStopover}
           onChange={(e) => handleChange("hasStopover", e.target.checked)}
+          placeholder="请选择是否经停"
         />
       </div>
 
@@ -201,6 +206,7 @@ function TripForm({ initialData, onSubmit, onCancel }) {
                 city: e.target.value,
               })
             }
+            placeholder="请输入经停城市"
           />
           <Input
             label="经停时长（分钟）"
@@ -212,6 +218,7 @@ function TripForm({ initialData, onSubmit, onCancel }) {
                 duration: e.target.value,
               })
             }
+            placeholder="请输入经停时长（分钟）"
           />
         </div>
       )}
@@ -223,6 +230,7 @@ function TripForm({ initialData, onSubmit, onCancel }) {
           value={formData.price}
           onChange={(e) => handleChange("price", e.target.value)}
           prefix="¥"
+          placeholder="请输入票价"
         />
       </div>
 
@@ -231,6 +239,7 @@ function TripForm({ initialData, onSubmit, onCancel }) {
           label="需要住宿"
           checked={formData.needHotel}
           onChange={(e) => handleChange("needHotel", e.target.checked)}
+          placeholder="请选择是否需要住宿"
         />
       </div>
 
@@ -245,6 +254,7 @@ function TripForm({ initialData, onSubmit, onCancel }) {
                 name: e.target.value,
               })
             }
+            placeholder="请输入酒店名称"
           />
           <Input
             label="住宿费用"
@@ -257,6 +267,7 @@ function TripForm({ initialData, onSubmit, onCancel }) {
               })
             }
             prefix="¥"
+            placeholder="请输入住宿费用"
           />
         </div>
       )}
