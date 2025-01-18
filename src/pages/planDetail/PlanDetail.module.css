@@ -14,8 +14,6 @@
 
 .content {
   flex: 1;
-  overflow-y: auto;
-  margin: 0 auto;
   max-width: 800px;
   width: 100%;
 }
@@ -79,6 +77,9 @@
 
 .trips {
   padding: 0 24px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .tripCard {

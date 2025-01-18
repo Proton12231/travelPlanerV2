@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import Button from "../../components/Button";
 import TripCard from "../../components/TripCard";
 import TripFilter from "../../components/TripFilter";
@@ -17,18 +17,14 @@ function ItineraryList() {
   const [editingTrip, setEditingTrip] = useState(null);
   const [showPlanForm, setShowPlanForm] = useState(false);
   const [editingPlan, setEditingPlan] = useState(null);
-
-  // 获取所有行程
-  const allTrips = useMemo(() => {
-    const plans = JSON.parse(localStorage.getItem("travelPlans") || "[]");
-    return plans.flatMap((plan) =>
-      plan.trips?.map((trip) => ({
-        ...trip,
-        planId: plan.id,
-        planName: plan.planName,
-      }))
-    );
-  }, []);
+  const [allTrips, setAllTrips] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem("trips") || "[]");
+    } catch (error) {
+      console.error("Error loading initial trips:", error);
+      return [];
+    }
+  });
 
   // 筛选行程
   const filteredTrips = useMemo(() => {
@@ -60,36 +56,33 @@ function ItineraryList() {
   }, [allTrips, filters]);
 
   const handleSubmit = (tripData, isEdit = false) => {
-    // 创建新的行程方案
-    const plans = JSON.parse(localStorage.getItem("travelPlans") || "[]");
-    if (isEdit) {
-      // 更新已有行程
-      const updatedPlans = plans?.map((plan) => {
-        if (plan?.id === editingTrip?.planId) {
-          return {
-            ...plan,
-            trips: plan?.trips?.map((trip) =>
-              trip === editingTrip ? tripData : trip
-            ),
-          };
-        }
-        return plan;
-      });
-      localStorage.setItem("travelPlans", JSON.stringify(updatedPlans));
-    } else {
-      // 创建新行程
-      const newPlan = {
-        id: Date.now(),
-        planName: `${tripData.departureCity} → ${tripData.arrivalCity}`,
-        trips: [tripData],
-        createdAt: new Date().toISOString(),
-      };
-      localStorage.setItem("travelPlans", JSON.stringify([...plans, newPlan]));
+    try {
+      const trips = JSON.parse(localStorage.getItem("trips") || "[]");
+      if (isEdit) {
+        // 更新现有行程
+        const updatedTrips = trips.map((trip) =>
+          trip.id === editingTrip.id ? { ...tripData, id: trip.id } : trip
+        );
+        localStorage.setItem("trips", JSON.stringify(updatedTrips));
+      } else {
+        // 添加新行程
+        const newTrip = {
+          id: Date.now(),
+          createdAt: new Date().toISOString(),
+          ...tripData,
+        };
+        localStorage.setItem("trips", JSON.stringify([...trips, newTrip]));
+      }
+    } catch (error) {
+      console.error("Error handling trip data:", error);
+      // 如果数据损坏，重置数据
+      localStorage.setItem("trips", "[]");
     }
 
     setShowForm(false);
     setEditingTrip(null);
-    window.location.reload(); // 刷新页面以更新数据
+    // 使用软刷新替代页面刷新
+    window.dispatchEvent(new Event("storage"));
   };
 
   const handleEdit = (trip) => {
@@ -100,21 +93,26 @@ function ItineraryList() {
   const handleDelete = (trip) => {
     if (!window.confirm("确定要删除这个行程吗？")) return;
 
-    const plans = JSON.parse(localStorage.getItem("travelPlans") || "[]");
-    const updatedPlans = plans
-      ?.map((plan) => {
-        if (plan.id === trip.planId) {
-          return {
-            ...plan,
-            trips: plan.trips.filter((t) => t !== trip),
-          };
-        }
-        return plan;
-      })
-      .filter((plan) => plan.trips?.length > 0); // 如果方案没有行程则删除
-
-    localStorage.setItem("travelPlans", JSON.stringify(updatedPlans));
-    window.location.reload();
+    try {
+      const trips = JSON.parse(localStorage.getItem("trips") || "[]");
+      const updatedTrips = trips.filter((t) => t.id !== trip.id);
+      localStorage.setItem("trips", JSON.stringify(updatedTrips));
+      // 同时从所有方案中移除该行程
+      try {
+        const plans = JSON.parse(localStorage.getItem("travelPlans") || "[]");
+        const updatedPlans = plans.map((plan) => ({
+          ...plan,
+          trips: plan.trips?.filter((t) => t.id !== trip.id) || [],
+        }));
+        localStorage.setItem("travelPlans", JSON.stringify(updatedPlans));
+      } catch (error) {
+        console.error("Error updating plans:", error);
+      }
+    } catch (error) {
+      console.error("Error deleting trip:", error);
+      localStorage.setItem("trips", "[]");
+    }
+    window.dispatchEvent(new Event("storage"));
   };
 
   const handleEditPlan = (planId) => {
@@ -137,6 +135,22 @@ function ItineraryList() {
     window.location.reload();
   };
 
+  // 监听 storage 事件来更新数据
+  useEffect(() => {
+    const handleStorage = () => {
+      try {
+        const trips = JSON.parse(localStorage.getItem("trips") || "[]");
+        setAllTrips(trips);
+      } catch (error) {
+        console.error("Error loading trips:", error);
+        setAllTrips([]);
+      }
+    };
+
+    window.addEventListener("storage", handleStorage);
+    return () => window.removeEventListener("storage", handleStorage);
+  }, []);
+
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -153,11 +167,15 @@ function ItineraryList() {
 
       {filteredTrips?.map((trip, index) => (
         <div
-          key={`${trip.planId}-${index}`}
+          key={`${trip.id}-${index}`}
           className={styles.tripCard}
           onClick={() => handleEdit(trip)}
         >
-          <TripCard data={trip} />
+          <TripCard
+            data={trip}
+            onEdit={() => handleEdit(trip)}
+            onDelete={() => handleDelete(trip)}
+          />
         </div>
       ))}
       {filteredTrips.length === 0 && (
@@ -171,6 +189,7 @@ function ItineraryList() {
           setEditingTrip(null);
         }}
         title={editingTrip ? "编辑行程" : "添加行程"}
+        footer={null}
       >
         <TripForm
           initialData={editingTrip}

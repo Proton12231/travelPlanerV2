@@ -2,7 +2,7 @@ import { formatTransportNo } from "../../utils/format";
 import Icon from "../Icon";
 import styles from "./TripCard.module.css";
 
-function TripCard({ data }) {
+function TripCard({ data, onEdit, onDelete }) {
   const {
     transportType,
     flightNo,
@@ -47,7 +47,7 @@ function TripCard({ data }) {
   const arrivalDateTime = formatTime(arrivalTime);
 
   return (
-    <div className={styles.card}>
+    <div className={styles.card} onClick={onEdit}>
       <div className={styles.mainContent}>
         <div className={styles.cities}>
           <div className={styles.cityInfo}>
@@ -119,6 +119,35 @@ function TripCard({ data }) {
           </div>
         </div>
       </div>
+
+      {(onEdit || onDelete) && (
+        <div className={styles.actions}>
+          {onEdit && (
+            <button
+              className={styles.actionButton}
+              onClick={(e) => {
+                e.stopPropagation();
+                onEdit();
+              }}
+              title="编辑"
+            >
+              <Icon type="edit" />
+            </button>
+          )}
+          {onDelete && (
+            <button
+              className={styles.actionButton}
+              onClick={(e) => {
+                e.stopPropagation();
+                onDelete();
+              }}
+              title="删除"
+            >
+              <Icon type="delete" />
+            </button>
+          )}
+        </div>
+      )}
     </div>
   );
 }

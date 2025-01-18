@@ -8,6 +8,7 @@ import TripForm from "./TripForm";
 import Empty from "../../components/Empty";
 import { useToast } from "../../components/Toast";
 import styles from "./PlanCreate.module.css";
+import TripSelector from "../../components/TripSelector";
 
 function PlanCreate({ onSubmit, onCancel, initialValues }) {
   const toast = useToast();
@@ -16,6 +17,17 @@ function PlanCreate({ onSubmit, onCancel, initialValues }) {
   const [showTripModal, setShowTripModal] = useState(false);
   const [editingTrip, setEditingTrip] = useState(null);
   const [showStats, setShowStats] = useState(false);
+  const [showTripSelector, setShowTripSelector] = useState(false);
+
+  // 获取所有可选的行程
+  const allTrips = useMemo(() => {
+    try {
+      return JSON.parse(localStorage.getItem("trips") || "[]");
+    } catch (error) {
+      console.error("Error loading trips:", error);
+      return [];
+    }
+  }, []);
 
   // 计算统计信息
   const stats = useMemo(() => {
@@ -62,14 +74,33 @@ function PlanCreate({ onSubmit, onCancel, initialValues }) {
   };
 
   const handleAddTrip = (tripData) => {
+    // 生成新的行程 ID
+    const newTripData = {
+      ...tripData,
+      id: Date.now(),
+      createdAt: new Date().toISOString(),
+    };
+
     if (editingTrip !== null) {
       setTrips((prev) =>
-        prev.map((trip, index) => (index === editingTrip ? tripData : trip))
+        prev.map((trip, index) => (index === editingTrip ? newTripData : trip))
       );
       setEditingTrip(null);
     } else {
-      setTrips((prev) => [...prev, tripData]);
+      setTrips((prev) => [...prev, newTripData]);
     }
+
+    // 同时保存到行程表中
+    try {
+      const existingTrips = JSON.parse(localStorage.getItem("trips") || "[]");
+      localStorage.setItem(
+        "trips",
+        JSON.stringify([...existingTrips, newTripData])
+      );
+    } catch (error) {
+      console.error("Error saving trip:", error);
+    }
+
     setShowTripModal(false);
   };
 
@@ -82,6 +113,11 @@ function PlanCreate({ onSubmit, onCancel, initialValues }) {
     setTrips((prev) => prev.filter((_, i) => i !== index));
   };
 
+  const handleSelectTrips = (selectedTrips) => {
+    setTrips((prev) => [...prev, ...selectedTrips]);
+    setShowTripSelector(false);
+  };
+
   const handleSubmit = () => {
     if (!planName.trim()) {
       toast.error("请输入方案名称");
@@ -91,10 +127,23 @@ function PlanCreate({ onSubmit, onCancel, initialValues }) {
       toast.error("请至少添加一个行程");
       return;
     }
+
+    // 确保所有行程都有正确的 ID
+    const tripsWithIds = trips.map((trip) => {
+      if (!trip.id) {
+        return {
+          ...trip,
+          id: Date.now(),
+          createdAt: new Date().toISOString(),
+        };
+      }
+      return trip;
+    });
+
     onSubmit({
       ...initialValues,
       planName,
-      trips,
+      trips: tripsWithIds,
     });
   };
 
@@ -173,38 +222,60 @@ function PlanCreate({ onSubmit, onCancel, initialValues }) {
                   <Empty
                     icon="plan"
                     title="开始规划您的行程"
-                    description="点击下方按钮添加第一个行程"
+                    description="添加行程或从已有行程中选择"
                   >
-                    <Button
-                      type="primary"
-                      onClick={() => setShowTripModal(true)}
-                    >
-                      添加行程
-                    </Button>
+                    <div className={styles.emptyActions}>
+                      <Button
+                        type="primary"
+                        onClick={() => setShowTripModal(true)}
+                      >
+                        新建行程
+                      </Button>
+                      <Button onClick={() => setShowTripSelector(true)}>
+                        选择已有行程
+                      </Button>
+                    </div>
                   </Empty>
                 ) : (
-                  trips.map((trip, index) => (
-                    <Draggable
-                      key={index}
-                      draggableId={`trip-${index}`}
-                      index={index}
-                    >
-                      {(provided) => (
-                        <div
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                          className={styles.tripItem}
-                        >
-                          <TripCard
-                            data={trip}
-                            onEdit={() => handleEditTrip(index)}
-                            onDelete={() => handleDeleteTrip(index)}
-                          />
-                        </div>
-                      )}
-                    </Draggable>
-                  ))
+                  <>
+                    {trips.map((trip, index) => (
+                      <Draggable
+                        key={index}
+                        draggableId={`trip-${index}`}
+                        index={index}
+                      >
+                        {(provided) => (
+                          <div
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                            className={styles.tripItem}
+                          >
+                            <TripCard
+                              data={trip}
+                              onEdit={() => handleEditTrip(index)}
+                              onDelete={() => handleDeleteTrip(index)}
+                            />
+                          </div>
+                        )}
+                      </Draggable>
+                    ))}
+                    <div className={styles.addButton}>
+                      <Button
+                        type="dashed"
+                        onClick={() => setShowTripSelector(true)}
+                        style={{ marginRight: 8 }}
+                      >
+                        选择已有行程
+                      </Button>
+                      <Button
+                        type="dashed"
+                        onClick={() => setShowTripModal(true)}
+                      >
+                        新建行程
+                      </Button>
+                    </div>
+                  </>
                 )}
                 {provided.placeholder}
               </div>
@@ -245,6 +316,21 @@ function PlanCreate({ onSubmit, onCancel, initialValues }) {
             setShowTripModal(false);
             setEditingTrip(null);
           }}
+        />
+      </Modal>
+
+      <Modal
+        visible={showTripSelector}
+        onClose={() => setShowTripSelector(false)}
+        title="选择行程"
+        width={800}
+        footer={null}
+      >
+        <TripSelector
+          trips={allTrips}
+          selectedTrips={trips}
+          onSubmit={handleSelectTrips}
+          onCancel={() => setShowTripSelector(false)}
         />
       </Modal>
     </div>
