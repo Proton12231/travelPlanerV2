@@ -1,0 +1,37 @@
+.timePicker {
+  display: flex;
+  gap: 1px;
+  height: 200px;
+  background: rgba(0, 0, 0, 0.02);
+}
+
+.column {
+  flex: 1;
+  overflow-y: auto;
+  scrollbar-width: none;
+  background: white;
+}
+
+.column::-webkit-scrollbar {
+  display: none;
+}
+
+.timeItem {
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.timeItem:hover {
+  background: rgba(24, 144, 255, 0.1);
+}
+
+.selected {
+  background: var(--primary-color) !important;
+  color: white;
+  font-weight: 500;
+}

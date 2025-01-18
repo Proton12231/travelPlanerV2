@@ -1,21 +1,26 @@
 import { useState, useRef, useEffect } from "react";
+import Input from "../Input";
+import Calendar from "./Calendar";
+import TimePicker from "./TimePicker";
 import styles from "./DateTimePicker.module.css";
 
-function DateTimePicker({
-  value,
-  onChange,
-  label,
-  error,
-  placeholder = "选择日期和时间",
-}) {
-  const [isOpen, setIsOpen] = useState(false);
-  const [date, setDate] = useState(value ? new Date(value) : new Date());
-  const pickerRef = useRef(null);
+function DateTimePicker({ label, value, onChange }) {
+  const [showPicker, setShowPicker] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(
+    value ? new Date(value) : null
+  );
+  const [selectedTime, setSelectedTime] = useState(
+    value ? new Date(value) : null
+  );
+  const containerRef = useRef(null);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (pickerRef.current && !pickerRef.current.contains(event.target)) {
-        setIsOpen(false);
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(event.target)
+      ) {
+        setShowPicker(false);
       }
     };
 
@@ -23,66 +28,57 @@ function DateTimePicker({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const handleDateChange = (e) => {
-    const newDate = new Date(e.target.value);
-    setDate(newDate);
-    onChange(newDate.toISOString());
+  const handleDateSelect = (date) => {
+    setSelectedDate(date);
+    if (selectedTime) {
+      const newDateTime = new Date(date);
+      newDateTime.setHours(selectedTime.getHours());
+      newDateTime.setMinutes(selectedTime.getMinutes());
+      onChange(newDateTime.toISOString());
+      setShowPicker(false);
+    }
   };
 
-  const handleTimeChange = (e) => {
-    const [hours, minutes] = e.target.value.split(":");
-    const newDate = new Date(date);
-    newDate.setHours(hours);
-    newDate.setMinutes(minutes);
-    setDate(newDate);
-    onChange(newDate.toISOString());
+  const handleTimeSelect = (time) => {
+    setSelectedTime(time);
+    if (selectedDate) {
+      const newDateTime = new Date(selectedDate);
+      newDateTime.setHours(time.getHours());
+      newDateTime.setMinutes(time.getMinutes());
+      onChange(newDateTime.toISOString());
+      setShowPicker(false);
+    }
   };
 
   const formatDateTime = (date) => {
     if (!date) return "";
-    return new Date(date).toLocaleString("zh-CN", {
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: false,
-    });
+    const d = new Date(date);
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(
+      2,
+      "0"
+    )}-${String(d.getDate()).padStart(2, "0")} ${String(d.getHours()).padStart(
+      2,
+      "0"
+    )}:${String(d.getMinutes()).padStart(2, "0")}`;
   };
 
   return (
-    <div className={styles.container} ref={pickerRef}>
-      {label && <label className={styles.label}>{label}</label>}
-      <div
-        className={`${styles.picker} ${isOpen ? styles.open : ""} ${
-          error ? styles.error : ""
-        }`}
-        onClick={() => setIsOpen(!isOpen)}
-      >
-        <div className={styles.value}>
-          {value ? formatDateTime(value) : placeholder}
-        </div>
-        <div className={`${styles.arrow} ${isOpen ? styles.up : ""}`}>▼</div>
-      </div>
-      {isOpen && (
-        <div className={styles.dropdown}>
-          <input
-            type="date"
-            className={styles.dateInput}
-            value={date.toISOString().split("T")[0]}
-            onChange={handleDateChange}
-          />
-          <input
-            type="time"
-            className={styles.timeInput}
-            value={`${String(date.getHours()).padStart(2, "0")}:${String(
-              date.getMinutes()
-            ).padStart(2, "0")}`}
-            onChange={handleTimeChange}
-          />
+    <div className={styles.container} ref={containerRef}>
+      <Input
+        label={label}
+        value={formatDateTime(value)}
+        readOnly
+        placeholder="请选择日期和时间"
+        onClick={() => setShowPicker(true)}
+      />
+      {showPicker && (
+        <div className={styles.pickerContainer}>
+          <div className={styles.pickerContent}>
+            <Calendar value={selectedDate} onChange={handleDateSelect} />
+            <TimePicker value={selectedTime} onChange={handleTimeSelect} />
+          </div>
         </div>
       )}
-      {error && <span className={styles.errorText}>{error}</span>}
     </div>
   );
 }
